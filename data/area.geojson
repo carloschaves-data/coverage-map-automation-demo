@@ -1,0 +1,23 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Cali Urban Area"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-76.5613, 3.3950],
+            [-76.4950, 3.3950],
+            [-76.4950, 3.4890],
+            [-76.5613, 3.4890],
+            [-76.5613, 3.3950]
+          ]
+        ]
+      }
+    }
+  ]
+}
