@@ -1,56 +1,126 @@
-# Coverage Map Automation Demo
+ # Coverage Map Automation – Versión Intermedia
 
-This project demonstrates how to automatically generate a synthetic mobile network coverage map using:
-- Python
-- GeoPandas
-- Pandas
-- Matplotlib
-- Geospatial processing
+Proyecto diseñado para simular, procesar y visualizar mapas de cobertura móvil utilizando datos sintéticos de celdas 4G y 5G.
+Incluye generación de geometrías, cálculos KPI, visualización y un pipeline orquestado.
 
-Although inspired by real telecom workflows, **all data used here is fully synthetic or open-data**, with no proprietary or confidential information.
+📌 Objetivo del Proyecto
 
----
+Construir una herramienta modular capaz de:
+Procesar una base de datos sintética de celdas 4G/5G.
+Generar polígonos de cobertura basados en potencia, azimut y ancho de haz.
+Calcular KPIs por celda y por área.
+Visualizar mapas de cobertura de forma automatizada.
+Preparar un pipeline listo para escalar a análisis más avanzados.
+Este proyecto simula tareas comunes en áreas como RF Engineering, Planning, Drive Test Automation y Data Analytics.
 
-## 📌 Project Structure
-
+📁 Estructura del Proyecto
 coverage-map-automation-demo/
-│── data/
-│ ├── cells.csv # Synthetic cell data
-│ ├── area.geojson # Open-data polygon of Cali, Colombia
 │
-│── src/
-│ ├── generator.py # Main script for map generation
+├── data/
+│   └── cells.csv
 │
-│── outputs/
-│ ├── coverage_map.png # Generated map (created on run)
+├── output/
+│   └── coverage_map.png
 │
-│── requirements.txt
-│── README.md
+├── src/
+│   ├── generator.py         # Orquestador principal
+│   ├── geometry.py          # Módulo de geocálculos
+│   ├── kpi.py               # Módulo de generación de KPIs
+│   ├── visualizer.py        # Módulo de visualización
+│
+├── README.md
+└── requirements.txt
 
-## 🚀 How to Run
+⚙️ Instalación del entorno
+1. Crear entorno virtual
+python -m venv venv
 
-1. Install dependencies:
+2. Activarlo
+
+Windows:
+venv\Scripts\activate
+
+
+Mac/Linux:
+source venv/bin/activate
+
+3. Instalar dependencias
 pip install -r requirements.txt
-2. Run the script:
+
+📊 Datos de Entrada
+
+El archivo cells.csv debe contener las siguientes columnas:
+
+Columna 	            Descripción
+cell_id	                ID único de sector
+site_id	                ID del sitio
+sector_id	            Sector (1-3)
+latitude / longitude	Coordenadas de la celda
+azimuth	                Dirección del haz
+power_dbm	            Potencia transmitida
+tilt	                Tilt del panel
+technology	            4G / 5G
+rsrp_mean	            Valor medio RSRP
+rsrq_mean	            Valor medio RSRQ
+coverage_radius_m	    Radio de cobertura estimado
+beamwidth	            Apertura del haz
+pci	PCI / GNB-ID
+🚀 Ejecución
+
+Desde la carpeta raíz:
+
 python src/generator.py
-3. The output map will be saved in:
-outputs/coverage_map.png
 
 
----
+Esto ejecutará:
+Carga del dataset y creación del GeoDataFrame.
+Generación de geometrías de coverage.
+Cálculo de KPIs.
+Ensamble final del mapa.
+Exportación a /output/coverage_map.png.
 
-## 📊 Result
+📐 Módulos Principales
+geometry.py
 
-The script generates a map showing:
-- The urban polygon of Cali  
-- Synthetic cell sites  
-- Colors and marker sizes proportional to transmit power  
+Contiene funciones para:
+Generar buffers de cobertura basados en potencia.
+Generar polígonos direccionales según azimuth y beamwidth.
+Convertir puntos a geometrías geoespaciales.
+kpi.py
 
-This project simulates part of a typical telecom RF workflow using **safe, non-proprietary data**.
+Incluye funciones como:
+Generación de KPIs por celda.
+Cálculo de área cubierta.
+Cálculo de superposición de celdas.
+Detección de huecos de cobertura (versión futura).
 
----
+generator.py
+Se encarga de:
+Orquestar la carga de datos.
+Ejecutar el pipeline geométrico.
+Ejecutar KPIs.
+Enviar todo a visualizer.py.
 
-## 📡 Author
-**Carlos Andrés Chaves**  
-Automation & Data Engineer  
-GitHub: https://github.com/carloschaves-data  
+Exportar los resultados.
+
+🗺️ Visualización
+
+El mapa generado incluye:
+
+✔ Sectores 4G / 5G
+✔ Coberturas representadas con polígonos
+✔ Colores por tecnología
+✔ Centros de celda marcados
+✔ Exportación a PNG
+
+📌 Próximas versiones
+
+Detección automática de anomalías de cobertura.
+Clustering de celdas por nivel de señal.
+Heatmaps de RSRP / RSRQ.
+Dashboard interactivo (Streamlit / Dash).
+Simulación de handovers y overlaps.
+
+🧑‍💻 Autor
+
+Desarrollado por Carlos Chaves – Ingeniería en Sistemas y Telecomunicaciones.
